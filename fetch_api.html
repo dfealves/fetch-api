@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="postData">
+      <input
+        id="name"
+        name="name"
+        type="text"
+        pattern="^\D{2,}\s[\D\s]{2,}$"
+        title="Digite seu nome completo"
+        required
+      />
+      <input
+        id="email"
+        name="email"
+        type="email"
+        title="Digite um email válido"
+        required
+      />
+      <input name="redirectTo" type="hidden" value="https://gama.academy" />
+      <input name="debugMode" type="hidden" value="true" />
+      <input type="submit" />
+    </form>
+
+    <script>
+      document.getElementById("postData").addEventListener("submit", postData);
+
+      function postData(event) {
+        event.preventDefault();
+
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+
+        const url = "https://reqres.in/api/users";
+
+        // post body data
+        const user = {
+          name,
+          email
+        };
+
+        // create request object
+        const request = new Request(url, {
+          method: "POST",
+          body: JSON.stringify(user),
+          headers: new Headers({
+            "Content-Type": "application/json"
+          })
+        });
+
+        // pass request object to `fetch()`
+        fetch(request)
+          .then(res => res.json())
+          .then(res => console.log(res));
+      }
+    </script>
+  </body>
+</html>
